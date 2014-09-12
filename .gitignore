@@ -117,3 +117,11 @@ local.properties
 
 # TeXlipse plugin
 .texlipse
+
+### Gradle ###
+.gradle
+build/
+
+# Ignore Gradle GUI config
+gradle-app.setting
+
