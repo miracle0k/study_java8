@@ -28,3 +28,6 @@ dependencies {
     // 'test.useTestNG()' to your build script.
     testCompile 'junit:junit:4.11'
 }
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
