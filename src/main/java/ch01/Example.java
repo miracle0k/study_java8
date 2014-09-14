@@ -7,9 +7,13 @@
 
 package ch01;
 
+import javafx.scene.control.Button;
+
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.List;
 import java.util.function.BiFunction;
+import java.util.stream.Stream;
 
 public class Example {
     public static void main(String[] args) {
@@ -53,10 +57,14 @@ public class Example {
         // Runnable.run 메소드는 예외를 던질 수 없음.
         Runnable sleeper = () -> {
             System.out.println("Zzz");
-            System.out.println("Zzz");
+            System.out.println("Zzz2");
             // 오류 Thread.sleep(1000);
         };
+        Thread t = new Thread(sleeper);
+        t.run();
 
         System.out.println(words[0]);
+
+        Runnable sleepr2 = System.out::println; // == () -> System.out.println();
     }
 }
