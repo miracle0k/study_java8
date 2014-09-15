@@ -9,10 +9,9 @@ package ch01;
 
 import javafx.scene.control.Button;
 
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.function.BiFunction;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Example {
@@ -47,8 +46,10 @@ public class Example {
         //람다 표현식
         Arrays.sort(words, (first, second) -> Integer.compare(first.length(), second.length()));
 
+        System.out.println(words[0]);
+
         //함수형 인터페이스
-        BiFunction<String, String, Integer> comp = (f,s) -> Integer.compare(f.length(), s.length());
+        BiFunction<String, String, Integer> comp = (f, s) -> Integer.compare(f.length(), s.length());
 
         // 대입 안됨.
         //Arrays.sort(words, comp);
@@ -63,8 +64,12 @@ public class Example {
         Thread t = new Thread(sleeper);
         t.run();
 
-        System.out.println(words[0]);
-
+        // 메소드 레퍼런스
         Runnable sleepr2 = System.out::println; // == () -> System.out.println();
+
+        // 생성자 레퍼런스
+        List<String> lables = new ArrayList<>();
+        Stream<Button> stream = lables.stream().map(Button::new);
+        List<Button> buttons = stream.collect(Collectors.toList());
     }
 }
