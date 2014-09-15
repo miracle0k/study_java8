@@ -71,5 +71,19 @@ public class Example {
         List<String> lables = new ArrayList<>();
         Stream<Button> stream = lables.stream().map(Button::new);
         List<Button> buttons = stream.collect(Collectors.toList());
+
+    }
+
+    // 변수유효 범위
+    public static void repeatMessage(String text, int count) {
+        Runnable r = () -> {
+            for (int i = 0; i < count; i++) {
+                System.out.println(text);
+                Thread.yield();
+            }
+            // 캡처된 변수는 final과 동일하게 취급.
+            // count++;
+        };
+        new Thread(r).start();
     }
 }
