@@ -117,9 +117,31 @@ List<Button> buttons = stream.collect(Collectors.toList());
 ````
 
 ### 변수 유효 범위
+````java
+public static void repeatMessage(String text, int count) {
+    Runnable r = () -> {
+        for (int i = 0; i < count; i++) {
+            System.out.println(text);
+            Thread.yield();
+        }
+
+        count++;// 오류 : 캡처된 변수는 final과 동일하게 취급.
+    };
+    new Thread(r).start();
+}
+repeatMessage("Hello", 1000);
+
+````
+람다 표현식의 구조
+1. 코드 블록
+2. 파라미터
+3. 자유변수(파라미터도 아니고 코드 내부에도 정의되지 않은 변수)의 값
+
+* 위의 예제의 람다 표현식은 자유 변수 2개(text, count)를 포함함.
+* 람다 표현식의 자료 구조는 해당 변수의 값(hello, 1000)을 저장해야 하며, 캡처(capture) 했다고 표현.
+* 캡쳐된 변수는 변경 할 수 없음(final).
+  쓰레드 세이프를 보장하기 위해서~
 
 ### 디폴트 메서드
 
 ### 인터페이스의 정적 메서드
-
-
