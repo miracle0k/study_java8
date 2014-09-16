@@ -42,6 +42,9 @@ public class Example {
         //람다 표현식
         Arrays.sort(words, (first, second) -> Integer.compare(first.length(), second.length()));
 
+        // 정적 comparing 이용.
+        Arrays.sort(words, Comparator.comparing(String::length));
+
         System.out.println(words[0]);
 
         //함수형 인터페이스
