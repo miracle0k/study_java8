@@ -69,3 +69,25 @@ Comparator<String> comp = (first, second) -> Integer.compare(first.length(), sec
 // 메서드에서 추정되는 타입 한 개를 파라미터로 받으면 괄호 생략 가능
 EventHandler<ActionEvent> listener = event -> System.out.println("Click~");
 ````
+
+### 함수형 인터페이스
+단일 추상 메소드(single abstract method)를 갖춘 인터페이스의 객체에서 람다 표현식을 사용할 수 있으며, 이런 인터페이스를 *함수형 인터페이스(functional interface)*라고 한다.
+
+예) Comparator 인터페이스를 메소르를 한개만 가지고 있으므로 함수형 인터페이스이다.
+
+````java
+Arrays.sort(words, (first, second) -> Integer.compare(first.length(), second.length()));
+````
+* Arrays의 sortt 메소드는 Comparator<String> 인터페이스를 구현한 클래스가 필요.
+* Comparator 인터페이스의 compare 메소드가 호출되면 람다 표현식이 실행 됨.
+
+````java
+Runnable sleeper = () -> {
+    System.out.println("Zzz");
+    System.out.println("Zzz2");
+    Thread.sleep(1000); // Checked Exception을 던지나 run 메소드는 예외를 던지지 않아서 오류.
+};
+````
+* 검사 예외(checked exception)은 함수 인터페이스에 선언되어 있어야 던져질 수 있음.
+ Thead.sleep이 던지는 예외를 catch하거나, Checked Exception을 던질 수 있는 Callable를 이용해야 함.
+ 
