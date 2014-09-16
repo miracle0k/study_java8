@@ -82,6 +82,15 @@ Arrays.sort(words, (first, second) -> Integer.compare(first.length(), second.len
 * Comparator 인터페이스의 compare 메소드가 호출되면 람다 표현식이 실행 됨.
 
 ````java
+//함수형 인터페이스
+BiFunction<String, String, Integer> comp = (f, s) -> Integer.compare(f.length(), s.length());
+
+Arrays.sort(words, comp); // 대입이 안되어서 오류 발생.
+````
+* 자바는 다른 함수형 언어와 달리 함수 리터럴(function literal)을 지원하지 않음.
+* BiFunction 함수형 인터페이스를 받는 Array.sort가 없으므로 오류 발생.
+
+````java
 Runnable sleeper = () -> {
     System.out.println("Zzz");
     System.out.println("Zzz2");
