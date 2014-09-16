@@ -195,3 +195,25 @@ class Student extends Person implements Named {
 * 즉, Person의 getName이 상속됨.
 
 ### 인터페이스의 정적 메서드
+* Java 8부터 인터페이스에 static method를 추가할 수 있음.
+* Collection/Collections, Path/Paths 같은 인터페이스와 유틸클래스를 같이두는 패턴은
+이제 사용할 필요가 없음.
+
+````java
+public interface Path {
+    public static Path get(String first, String... more) {
+        return FileSystems.getDefault().getPath(first, more);
+    }
+}
+````
+* Path 인터페이스에 정적 메소드를 추가하면 Paths 클래스 필요 없음.
+* Collection 인터페이스에 nCopies 정적 메소드를 추가하면...
+    * Collections.nCopies 대신에 List.nCopies를 사용할 수 있다.
+    * 코드를 읽을 때 반환 값이 List임을 바로 알 수 있음.
+* 모든 Collection 위 방식으로 리펙토링될 것 같진 않음.
+    * 인터페이스 직접 설계시 이를 이용하면 유용할 듯.
+
+````java
+Arrays.sort(words, Comparator.comparing(String::length));
+````
+* 위의 Comparator는 comparing 정적 메소드를 이용하면, 더 간단하게 구현 가능.
