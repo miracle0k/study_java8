@@ -98,8 +98,8 @@ Runnable sleeper = () -> {
 };
 ````
 * 검사 예외(checked exception)은 함수 인터페이스에 선언되어 있어야 던져질 수 있음.
-  Thead.sleep이 던지는 예외를 catch하거나, Checked Exception을 던질 수 있는 Callable를 이용해야 함.
-  
+ Thead.sleep이 던지는 예외를 catch하거나, Checked Exception을 던질 수 있는 Callable를 이용해야 함.
+ 
 ### 메서드 레퍼런스
 ````java
 // 메소드 레퍼런스
@@ -117,6 +117,12 @@ List<Button> buttons = stream.collect(Collectors.toList());
 ````
 
 ### 변수 유효 범위
+람다 표현식의 구조
+
+1. 코드 블록
+2. 파라미터
+3. 자유변수(파라미터도 아니고 코드 내부에도 정의되지 않은 변수)의 값
+
 ````java
 public static void repeatMessage(String text, int count) {
     Runnable r = () -> {
@@ -132,11 +138,6 @@ public static void repeatMessage(String text, int count) {
 repeatMessage("Hello", 1000);
 
 ````
-람다 표현식의 구조
-1. 코드 블록
-2. 파라미터
-3. 자유변수(파라미터도 아니고 코드 내부에도 정의되지 않은 변수)의 값
-
 * 위의 예제의 람다 표현식은 자유 변수 2개(text, count)를 포함함.
 * 람다 표현식의 자료 구조는 해당 변수의 값(hello, 1000)을 저장해야 하며, 캡처(capture) 했다고 표현.
 * 캡쳐된 변수는 변경 할 수 없음(final).
