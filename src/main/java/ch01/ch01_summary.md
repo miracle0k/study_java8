@@ -98,7 +98,7 @@ Runnable sleeper = () -> {
 };
 ````
 * 검사 예외(checked exception)은 함수 인터페이스에 선언되어 있어야 던져질 수 있음.
-   Thead.sleep이 던지는 예외를 catch하거나, Checked Exception을 던질 수 있는 Callable를 이용해야 함.
+    * Thead.sleep이 던지는 예외를 catch하거나, Checked Exception을 던질 수 있는 Callable를 이용해야 함.
  
 ### 메서드 레퍼런스
 ````java
@@ -141,7 +141,7 @@ repeatMessage("Hello", 1000);
 * 위의 예제의 람다 표현식은 자유 변수 2개(text, count)를 포함함.
 * 람다 표현식의 자료 구조는 해당 변수의 값(hello, 1000)을 저장해야 하며, 캡처(capture) 했다고 표현.
 * 캡쳐된 변수는 변경 할 수 없음(final).
-    쓰레드 세이프를 보장하기 위해서~
+    * 쓰레드 세이프를 보장하기 위해서~
 
 ### 디폴트 메서드
 
