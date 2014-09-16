@@ -1,11 +1,14 @@
 package ch01;
 
-import javafx.scene.control.Button;
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import javafx.scene.control.Button;
 
 public class Example {
     public static void main(String[] args) {
@@ -64,7 +67,6 @@ public class Example {
         List<String> lables = new ArrayList<>();
         Stream<Button> stream = lables.stream().map(Button::new);
         List<Button> buttons = stream.collect(Collectors.toList());
-
     }
 
     // 변수유효 범위
