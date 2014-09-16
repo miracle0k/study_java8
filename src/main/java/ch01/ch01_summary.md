@@ -144,9 +144,6 @@ repeatMessage("Hello", 1000);
     * 쓰레드 세이프를 보장하기 위해서~
 
 ### 디폴트 메서드
-
-디폴트 메서드 설명 추가..
-
 ````java
 public interface Person {
     long getId();
