@@ -98,7 +98,7 @@ Runnable sleeper = () -> {
 };
 ````
 * 검사 예외(checked exception)은 함수 인터페이스에 선언되어 있어야 던져질 수 있음.
- Thead.sleep이 던지는 예외를 catch하거나, Checked Exception을 던질 수 있는 Callable를 이용해야 함.
+   Thead.sleep이 던지는 예외를 catch하거나, Checked Exception을 던질 수 있는 Callable를 이용해야 함.
  
 ### 메서드 레퍼런스
 ````java
@@ -141,8 +141,57 @@ repeatMessage("Hello", 1000);
 * 위의 예제의 람다 표현식은 자유 변수 2개(text, count)를 포함함.
 * 람다 표현식의 자료 구조는 해당 변수의 값(hello, 1000)을 저장해야 하며, 캡처(capture) 했다고 표현.
 * 캡쳐된 변수는 변경 할 수 없음(final).
-  쓰레드 세이프를 보장하기 위해서~
+    쓰레드 세이프를 보장하기 위해서~
 
 ### 디폴트 메서드
+
+디폴트 메서드 설명 추가..
+
+````java
+public interface Person {
+    long getId();
+    // 디폴트 메소드
+    default String getName() {
+        return "John Q. Public";
+    }
+}
+````
+
+1. 슈퍼 클래스가 우선한다. 슈퍼클래스에서 구체적인 메서드를 제공하는 경우, 이와 이름이 
+2. 인터페이스들이 출동한다.어떤 슈퍼 인터페이스에서 디폴트 메소드를 제공하고, 또 다른 인터페이스에서
+(디폴트 메서드든 아니든) 이름 및 파라미터 타입이 같은 메서드를 제공하는 경우에는 해당 메서드를
+오버라이드해서 충돌을 해결해야 한다.
+
+````java
+interface Named {
+    default String getName() {
+        return "Name....";
+    }
+}
+
+class Student implements Person, Named {
+
+}
+````
+* Person, Named에 getName() 디폴트 메서드가 존재하여서, 컴파일 오류.
+* 프로그래머가 모호함을 해결해야 함.
+
+````java
+class Student implements Person, Named {
+  public String getName() {
+    return Person.super.getName();
+  }
+}
+````
+* 어떤 getName()을 사용할지 지정..
+
+````java
+class Student extends Person implements Named {
+
+}
+````
+* 슈퍼 클래스의 메서드만 중요!
+* Named의 디폴트 메서드는 무시됨
+* 즉, Person의 getName이 상속됨.
 
 ### 인터페이스의 정적 메서드
