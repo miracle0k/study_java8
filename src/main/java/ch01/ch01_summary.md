@@ -98,5 +98,28 @@ Runnable sleeper = () -> {
 };
 ````
 * 검사 예외(checked exception)은 함수 인터페이스에 선언되어 있어야 던져질 수 있음.
- Thead.sleep이 던지는 예외를 catch하거나, Checked Exception을 던질 수 있는 Callable를 이용해야 함.
- 
+  Thead.sleep이 던지는 예외를 catch하거나, Checked Exception을 던질 수 있는 Callable를 이용해야 함.
+  
+### 메서드 레퍼런스
+````java
+// 메소드 레퍼런스
+Runnable sleepr2 = System.out::println; // () -> System.out.println();
+Math::pow // (x,y) -> Math.pow(x,y)
+Arrays.sort(strings, String::compareToIgnoreCase) // (x, y) -> x.compareToIgnoreCase(y)
+````
+
+### 생성자 레퍼런스
+````java
+// 생성자 레퍼런스
+List<String> lables = new ArrayList<>();
+Stream<Button> stream = lables.stream().map(Button::new);
+List<Button> buttons = stream.collect(Collectors.toList());
+````
+
+### 변수 유효 범위
+
+### 디폴트 메서드
+
+### 인터페이스의 정적 메서드
+
+
