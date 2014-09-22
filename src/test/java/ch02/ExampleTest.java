@@ -3,17 +3,20 @@ package ch02;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 public class ExampleTest {
     private List<String> words;
 
-    @Before public void setUp() {
-        words = new ArrayList<String>();
-        words.add("ABC");
-        words.add("ZED");
+    @Before public void setUp() throws Exception{
+        String contents = new String(Files.readAllBytes(Paths.get("./ch02/alice.txt")), StandardCharsets.UTF_8);
+        words = Arrays.asList(contents.split("[\\P{L}]+"));
     }
 
     @Test public void 단순리덕션() {
