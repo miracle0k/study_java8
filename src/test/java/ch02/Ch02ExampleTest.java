@@ -14,17 +14,23 @@ import java.util.stream.Stream;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 public class Ch02ExampleTest {
     private List<String> words;
     private String contents;
+    private Integer[] digits;
 
     @Before public void setUp() throws Exception{
         ClassLoader loader = Ch02ExampleTest.class.getClassLoader();
         String classPathRoot = loader.getResource(".").getPath();
         contents = new String(Files.readAllBytes(Paths.get(classPathRoot, "ch02/alice.txt")), StandardCharsets.UTF_8);
         words = Arrays.asList(contents.split("[\\P{L}]+"));
+
+        digits = new Integer[]{
+                3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5, 8, 9, 7, 9, 3, 2, 3, 8, 4, 6, 2, 6,
+                4, 3, 3, 8, 3, 2, 7, 9, 5, 0, 2, 8, 8, 4, 1, 9, 7, 1, 6, 9, 3, 9, 9,
+                3, 7, 5, 1, 0, 5, 8, 2, 0, 9, 7, 4, 9, 4, 4, 5, 9, 2, 3, 0, 7, 8, 1,
+                6, 4, 0, 6, 2, 8, 6 };
     }
 
     @Test public void _01_단순반복() {
@@ -142,12 +148,12 @@ public class Ch02ExampleTest {
         }
     }
 
-    @Test(expected = NoSuchElementException.class) public void _08_옵션_타입() {
+    @Test(expected = NoSuchElementException.class) public void _07_옵션_타입() {
         Optional<String> optional = Optional.empty();
         optional.get();
     }
 
-    @Test public void _08_옵션_다루기() {
+    @Test public void _07_옵션_다루기() {
         final Optional<String> optional = words.stream().filter(w -> w.contains("red")).findFirst();
         try {
             optional.ifPresent(v -> {
@@ -197,7 +203,7 @@ public class Ch02ExampleTest {
         return x == 0 ? Optional.empty() : Optional.of(1 / x);
     }
 
-    @Test public void _08_옵션값_생성() {
+    @Test public void _07_옵션값_생성() {
         assertThat(inverse(0d), is(Optional.empty()));
         assertThat(inverse(10d), is(Optional.of(0.1d)));
 
@@ -210,5 +216,29 @@ public class Ch02ExampleTest {
         return x < 0 ? Optional.empty() : Optional.of(Math.sqrt(x));
     }
 
+    @Test public void _07_옵션값_합성() {
+        Optional<Double> result = inverse(4.0d).flatMap(Ch02ExampleTest::squareRoot);
+        assertThat(result, is(Optional.of(0.5d)));
 
+        Optional<Double> result2 = Optional.of(-4.0d)
+                .flatMap(Ch02ExampleTest::inverse)
+                .flatMap(Ch02ExampleTest::squareRoot);
+        assertThat("inverse, squareRoot중 하나라도 empty 리턴하면, 결과는 empty", result2, is(Optional.<Double>empty()));
+    }
+
+    @Test public void _08_리덕션() {
+        Stream<Integer> values = Stream.of(digits);
+        // x 이전값, y 지금 요소 (v0 + v1 + v2.....)
+        Optional<Integer> sum = values.reduce((x, y) -> x + y);
+
+        assertThat(sum, is(Optional.of(366)));
+
+    }
+
+    // 컴파일러 내부 오류로 컴파일 되지 않음..(java 1.8.20 for mac) ㅡ.ㅡ?
+//    @Test public void _08_리덕션2() {
+//        // 초기값, 누적함수, 결합함수(병렬처리시..)
+//        int sum = words.stream().reduce(0, (total, word) -> total + word.length(), (t1, t2) -> t1 + t2);
+//        assertThat(sum, is(9999));
+//    }
 }
