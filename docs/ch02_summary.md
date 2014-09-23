@@ -36,4 +36,8 @@ flatMap
 * findFirst : 첫값.
 * findAny : 어떤 값이든지..
 * anyMatch : 일치하는 값이 있는지.. 
-* allMatch, noneMatch.. --> 전체 스트림을 검사하지만, 병렬 실행을 통해서 이점을 얻을 수 있음. 
+* allMatch, noneMatch.. --> 전체 스트림을 검사하지만, 병렬 실행을 통해서 이점을 얻을 수 있음.
+
+# 08 리덕션 연산
+
+연산이 [결합 법칙](http://ko.wikipedia.org/wiki/%EA%B2%B0%ED%95%A9%EB%B2%95%EC%B9%99)이 성립하면, reduce 메소드로 리덕션 연산을 할 수 있으며, 병렬 스트림을 통하여 효율적으로 리덕션 연산을 수행 할 수 있다.
