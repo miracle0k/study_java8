@@ -241,4 +241,8 @@ public class Ch02ExampleTest {
 //        int sum = words.stream().reduce(0, (total, word) -> total + word.length(), (t1, t2) -> t1 + t2);
 //        assertThat(sum, is(9999));
 //    }
+
+    @Test public void _09_결과모으기() {
+
+    }
 }
