@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -104,7 +105,33 @@ public class Ch02ExampleTest {
         Stream<Character> letters = words.stream().flatMap(w -> characterStream(w));
     }
 
-    @Test public void 단순리덕션() {
+    @Test public void _04_서브스트림_추출() {
+        // limit
+        Stream<Double> randoms = Stream.generate(Math::random).limit(100);
+
+        assertThat(randoms.count(), is(100L));
+
+        // skip
+        Stream<String> words = Stream.of(contents.split("[\\P{L}]+")).skip(1);
+        assertThat(words.findFirst().get(), is("was"));
+    }
+
+    @Test public void _04_스트림_결합() {
+        Stream<Character> combined = Stream.concat(characterStream("Hello"), characterStream("World"));
+
+        assertThat(combined.count(), is(10L));
+    }
+
+    @Test public void _06_상태유지변환() {
+        // distinct는 이전 값을 기억하고 있어야 한다.
+        Stream<String> uniqueWords = Stream.of("merrily", "merrily", "merrily", "gently", "merrily").distinct();
+
+        final List<String> actual = uniqueWords.collect(Collectors.toList());
+        assertThat(actual.get(0), is("merrily"));
+        assertThat(actual.get(1), is("gently"));
+    }
+
+    @Test public void _06_단순리덕션() {
         Optional<String> largest = words.stream().max(String::compareToIgnoreCase);
         if (largest.isPresent()) {
             System.out.println("큰값: " + largest.get());
