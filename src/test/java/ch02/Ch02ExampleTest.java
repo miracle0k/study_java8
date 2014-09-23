@@ -141,4 +141,55 @@ public class Ch02ExampleTest {
             System.out.println("Empty~");
         }
     }
+
+    @Test(expected = NoSuchElementException.class) public void _08_옵션_타입() {
+        Optional<String> optional = Optional.empty();
+        optional.get();
+    }
+
+    @Test public void _08_옵션_다루기() {
+        final Optional<String> optional = words.stream().filter(w -> w.contains("red")).findFirst();
+        try {
+            optional.ifPresent(v -> {
+                throw new RuntimeException();
+            });
+            assert false; // 이 행은 실행되면 안됨.
+        } catch (RuntimeException e) {
+
+        }
+
+        // 비어있는 경우는 실행되지 않음.
+        Optional.empty().ifPresent(v->{throw new RuntimeException();});
+
+        Set<String> results = new HashSet<>();
+        optional.ifPresent(results::add);
+        assertThat(results.contains("tired"), is(true));
+
+        // 실행 결과를 받고 싶은 경우에는 map 사용.
+        results = new HashSet<>();
+        Optional<Boolean> added = optional.map(results::add);
+        assertThat(added, is(Optional.of(Boolean.TRUE)));
+
+        // 대상이 빈경우에는 empty Optional 반환
+        Optional<Boolean> a = Optional.empty().map(v -> true);
+        assertThat(a.isPresent(), is(false));
+
+        Optional<String> emptyOptional = Optional.empty();
+
+        // orElse로 기본값 지정 가능
+        String result = emptyOptional.orElse("기본값");
+        assertThat(result, is("기본값"));
+
+        // 기본값 생성하는 코드 호출 가능
+        result = emptyOptional.orElseGet(() -> System.getProperty("user.dir"));
+        assertThat(result, is(System.getProperty("user.dir")));
+
+        // 값이 없는 경우 예외 던지기
+        try {
+            emptyOptional.orElseThrow(NoSuchElementException::new);
+            assert false;
+        } catch (NoSuchElementException e) {
+
+        }
+    }
 }
