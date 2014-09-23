@@ -192,4 +192,23 @@ public class Ch02ExampleTest {
 
         }
     }
+
+    public static Optional<Double> inverse(Double x) {
+        return x == 0 ? Optional.empty() : Optional.of(1 / x);
+    }
+
+    @Test public void _08_옵션값_생성() {
+        assertThat(inverse(0d), is(Optional.empty()));
+        assertThat(inverse(10d), is(Optional.of(0.1d)));
+
+        // ofNullalbe -> null 값 처리
+        assertThat(Optional.ofNullable(null), is(Optional.empty()));
+        assertThat(Optional.ofNullable("test"), is(Optional.of("test")));
+    }
+
+    public static Optional<Double> squareRoot(Double x) {
+        return x < 0 ? Optional.empty() : Optional.of(Math.sqrt(x));
+    }
+
+
 }
