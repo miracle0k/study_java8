@@ -7,10 +7,7 @@ import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -122,13 +119,18 @@ public class Ch02ExampleTest {
         assertThat(combined.count(), is(10L));
     }
 
-    @Test public void _06_상태유지변환() {
+    @Test public void _05_상태유지변환_StatefulTransformation() {
         // distinct는 이전 값을 기억하고 있어야 한다.
         Stream<String> uniqueWords = Stream.of("merrily", "merrily", "merrily", "gently", "merrily").distinct();
 
         final List<String> actual = uniqueWords.collect(Collectors.toList());
         assertThat(actual.get(0), is("merrily"));
         assertThat(actual.get(1), is("gently"));
+
+        // sort도 이전 값을 기억하고 있어야한다. (전체 값을 다 알고 있어야..)
+        Stream<String> longestFirst = words.stream().sorted(Comparator.comparing(String::length).reversed());
+        final Optional<String> longestFirstFirst = longestFirst.findFirst();
+        assertThat(longestFirstFirst.get(), is("disappointment"));
     }
 
     @Test public void _06_단순리덕션() {
