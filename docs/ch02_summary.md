@@ -20,12 +20,12 @@
 # 03 filter, map, flatMap 메서드
 filter
 * 특정 조건으로 스트림을 걸러낸다.
-* 파라미터는 Predicate<T>로 리턴 값은 Boolean.
+* 파라미터는 `Predicate<T>`로 리턴 값은 Boolean.
 
 map
 * 스트림을 특정 방식으로 변환한다.
 * 변환을 수행하는 함수를 파라미터로 받음.
- 
+
 flatMap
 * 스트림을 펼친다(?)
 
@@ -41,3 +41,38 @@ flatMap
 # 08 리덕션 연산
 
 연산이 [결합 법칙](http://ko.wikipedia.org/wiki/%EA%B2%B0%ED%95%A9%EB%B2%95%EC%B9%99)이 성립하면, reduce 메소드로 리덕션 연산을 할 수 있으며, 병렬 스트림을 통하여 효율적으로 리덕션 연산을 수행 할 수 있다.
+
+# 09 결과 모으기
+반복자
+* iterator로 반복자 얻을 수 있음.
+* toArray로 배열 얻을 수 있고, 특정 타입의 배열 생성 위해서는 배열의 생성자를 넘겨줘야함.
+
+collect 등장
+* HashSet에 결과를 저장시 HashSet은 쓰레드에 안전하지 않므로 스트림을 병렬 처리 불가.
+* reduce 사용 못하고, collect 사용해야 함.
+
+collect의 인자
+
+1. supplier(공급자) : 대상 객체의 인스턴스 생성.
+2. accumulator(누산자) : 요소를 대상에 추가.
+3. combiner(결합자) : 두 객체를 하나로 병합.
+
+```java
+HashSet<String> result = stream.collect(HashSet::new, HashSet::add, HashSet::add);
+```
+병렬 처리시 각각의 쓰레드가 HashSet을 만들고, 나중에 하나의 객체로 합친다.
+
+Collectors : 자주 사용하는 collect를 모아둔 곳.
+* List -> `stream.collect(Collectors.toList());`
+* Set -> `stream.collect(Collectors.toSet());`
+* 특정 컬렉션 -> `stream.collect(Collectors.toCollection(TreeSet::new));`
+* 문자열 연결 -> `stream.collect(Collectors.join(", "));`
+* 요약 -> `stream.collect(Collectors.summarizingInt(String::length));`
+```java
+IntSummaryStatistics summary = words.stream().collect(Collectors.summarizingInt(String::length));
+assertThat(summary.getCount(), is(9989L));
+assertThat(summary.getAverage(), is(3.9401341475623184D));
+assertThat(summary.getMax(), is(14));
+```
+
+# 10 맵으로 모으기

@@ -243,6 +243,13 @@ public class Ch02ExampleTest {
 //    }
 
     @Test public void _09_결과모으기() {
+        // collect로 모으기
+        HashSet<String> result = words.stream().collect(HashSet::new, HashSet::add, HashSet::addAll);
 
+        // 통계 뽑기(합계, 평균, 최댓값, 최솟값등..)
+        IntSummaryStatistics summary = words.stream().collect(Collectors.summarizingInt(String::length));
+        assertThat(summary.getCount(), is(9989L));
+        assertThat(summary.getAverage(), is(3.9401341475623184D));
+        assertThat(summary.getMax(), is(14));
     }
 }
