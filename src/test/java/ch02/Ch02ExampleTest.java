@@ -235,6 +235,15 @@ public class Ch02ExampleTest {
 
     }
 
+    @Test public void _08_리덕션_병렬_수행확인() {
+        words.parallelStream().sorted().reduce("", (x, y) -> {
+            // 정렬을 했기 때문에 숫서대로 리듀스 되어야하나, 병렬처리해서
+            // 순서가 꼬여서 출력되어야 한다.
+            System.out.println(y);
+            return x + y;
+        });
+    }
+
     // 컴파일러 내부 오류로 컴파일 되지 않음..(java 1.8.20 for mac) ㅡ.ㅡ?
 //    @Test public void _08_리덕션2() {
 //        // 초기값, 누적함수, 결합함수(병렬처리시..)
