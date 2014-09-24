@@ -236,7 +236,7 @@ public class Ch02ExampleTest {
     }
 
     @Test public void _08_리덕션_병렬_수행확인() {
-        words.parallelStream().sorted().reduce("", (x, y) -> {
+        words.stream().sorted().parallel().reduce("", (x, y) -> {
             // 정렬을 했기 때문에 숫서대로 리듀스 되어야하나, 병렬처리해서
             // 순서가 꼬여서 출력되어야 한다.
             System.out.println(y);
@@ -244,7 +244,7 @@ public class Ch02ExampleTest {
         });
     }
 
-    // 컴파일러 내부 오류로 컴파일 되지 않음..(java 1.8.20 for mac) ㅡ.ㅡ?
+//    컴파일러 내부 오류로 컴파일 되지 않음..(java 1.8.20 for mac) ㅡ.ㅡ?
 //    @Test public void _08_리덕션2() {
 //        // 초기값, 누적함수, 결합함수(병렬처리시..)
 //        int sum = words.stream().reduce(0, (total, word) -> total + word.length(), (t1, t2) -> t1 + t2);
@@ -260,5 +260,20 @@ public class Ch02ExampleTest {
         assertThat(summary.getCount(), is(9989L));
         assertThat(summary.getAverage(), is(3.9401341475623184D));
         assertThat(summary.getMax(), is(14));
+    }
+
+    @Test public void _10_toMap() {
+        Stream<Locale> localeStream = Stream.of(Locale.getAvailableLocales());
+        Map<String, String> languageNames = localeStream.collect(Collectors.toMap(
+                l -> l.getDisplayLanguage(), // key 맵핑
+                l -> l.getDisplayLanguage(l), // value 맵핑
+                (existingValue, newValue) -> existingValue)); // key가 충돌하는 경우 머지 함수
+        assertThat(languageNames.get("우크라이나어"), is("українська"));
+        assertThat(languageNames.get("태국어"), is("ไทย"));
+    }
+
+    @Test public void _11_그룹핑() {
+        Map<String, List<Locale>> countryToLocales = Stream.of(Locale.getAvailableLocales()).collect(Collectors.groupingBy(Locale::getCountry));
+        System.out.println(countryToLocales.get("CH"));
     }
 }
