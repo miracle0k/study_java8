@@ -273,7 +273,12 @@ public class Ch02ExampleTest {
     }
 
     @Test public void _11_그룹핑() {
-        Map<String, List<Locale>> countryToLocales = Stream.of(Locale.getAvailableLocales()).collect(Collectors.groupingBy(Locale::getCountry));
+        final Stream<Locale> stream = Stream.of(Locale.getAvailableLocales());
+        Map<String, List<Locale>> countryToLocales = stream.collect(
+                Collectors.groupingBy(Locale::getCountry) // 묶을 기준값
+        );
         System.out.println(countryToLocales.get("CH"));
     }
+
+
 }
