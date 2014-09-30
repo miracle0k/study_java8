@@ -47,12 +47,50 @@ public class Parameters {
    }
 }
 ```
-IntConsumer는 몇번째 실행중인지 action에게 알려 줄 수 있으며, Runnable는 인자가 필요없을때 사용 가능.
-
-각각의 상황에 맞도록 파리미터 선언이 필요!
+IntConsumer는 몇번째 실행중인지 action에게 알려 줄 수 있으며, Runnable는 인자가 필요없을때 사용 가능하다.
 
 ## 함수형 인터페이스 선택
+대부분의 함수형 언어에서는 함수 타입으로 함수를 표현
+` (String, String) -> int`, `Function2<String, String, Integer>`
 
+자바에서는 `Comparator<String>`같은 함수형 인터페이스로 함수의 의도를 표현.
+프로그래밍 언어 이론에서는 **명목적 타이핑(nominal typing or name-based type system)**이라 한다.
+
+참고 : [Nominative and Structural type systems](http://en.wikipedia.org/wiki/Nominative_and_structural_type_systems)
+
+공통 함수형 인터페이스
+* Runnalbe, Suppliter, Consumer, BiConsumer, Function, BiFunction, UnaryOperator, BinaryOperator, Predicate, BiPredicate.
+* 자세한 설명은 교제 76쪽 표 3-1 참고
+
+예) 표준 함수형 인터페이스 사용한 메서드
+```java
+public static Image transform(Image in, UnaryOperator<Color> f) {
+  int width = (int) in.getWidth();
+  int height = (int) in.getHeight();
+  WritableImage out = new WritableImage(
+     width, height);
+  for (int x = 0; x < width; x++)
+     for (int y = 0; y < height; y++)
+        out.getPixelWriter().setColor(x, y,
+           f.apply(in.getPixelReader().getColor(x, y)));
+  return out;
+}
+
+//호출예
+Image brightenedImage = transform(image, Color::brighter);
+```
+
+자바 기본 타입용으로 32가지 함수형 인터페이스를 제공하며, 이를 통하여 오토박싱을 피할 수 있다.
+* 자세한 내용은 교제 78쪽 표 3-2 참고.
+
+함수 인터페이스 정의
+```java
+@FunctionalInterface
+interface ColorTransformer {
+   Color apply(int x, int y, Color colorAtXY);
+}
+```
+추상메서드 이름이 apply인 이유는 함수형 인터페이스의 대부분이 apply를 사용하기 때문. 다른 이름을 써도 괜찮으나 표준 이름을 고수하면 구현자가 좀 더 편해진다.
 ## 함수 리턴
 ## 합성
 ## 지연
