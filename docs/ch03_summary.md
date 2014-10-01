@@ -112,7 +112,29 @@ Image brightenedImage = transform(image, brighten(1.2));
 brighten 메소드는 UnaryOperator 함수형 인터페이스를 리턴하며, 리턴값을 transform의 인자로 사용할 수 있다.
 
 ## 합성
+예) 이미지를 밝게 -> 흑백으로 전환.
+```java
+Image image = new Image("eiffel-tower.jpg");
+Image image2 = transform(image, Color::brighter);
+Image image3 = transform(image2, Color::grayscale);
+```
+이미지를 밝게한 후에 흑백으로 전환시 중간 이미지가 필요하며, 만일 큰 그림이라면 많은 리소스가 필요하다.
+각각의 연산을 합성해서 픽셀 단위로 적용 할 수 있으면 좋음.
+
+예) 합성 적용
+```java
+public static <T> UnaryOperator<T> compose(UnaryOperator<T> op1,
+  UnaryOperator<T> op2) {
+  return t -> op2.apply(op1.apply(t));
+}
+
+// 호출 예
+transform(image, compose(Color::brighter, Color::grayscale))
+```
+compose에 의해서 합성된 연산이 각각의 픽셀에 적용되며, 중간 이미지도 필요 없음.
+
 ## 지연
+
 ## 연산 병렬화
 ## 예외 다루기
 ## 람다와 제네릭
