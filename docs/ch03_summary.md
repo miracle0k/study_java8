@@ -134,6 +134,51 @@ transform(image, compose(Color::brighter, Color::grayscale))
 compose에 의해서 합성된 연산이 각각의 픽셀에 적용되며, 중간 이미지도 필요 없음.
 
 ## 지연
+지연처리시에는 수행할 작업을 쌓아두는 중간 연산과 결과를 주는 최종 연산을 구분해야 함.
+
+예) 지연 처리
+```java
+class LatentImage {
+   private Image in;
+   private List<UnaryOperator<Color>> pendingOperations;
+
+   public static LatentImage from(Image in) {
+      LatentImage result = new LatentImage();
+      result.in = in;
+      result.pendingOperations = new ArrayList<>();
+      return result;
+   }
+}
+```
+별도의 LatentImage에서 지연될 이미지 연산을 저장한다. Image에 메서드를 추가할 수 없으므로 스트림과 비슷한 from 팩토리 메소드를 제공함.
+
+예) 중간 연산
+```java
+LatentImage transform(UnaryOperator<Color> f) {
+  pendingOperations.add(f);
+  return this;
+}
+```
+지연 처리될 연산을 저장하는 중간 연산인 transform 제공.
+
+예) 최종 연산
+```java
+public Image toImage() {
+  int width = (int) in.getWidth();
+  int height = (int) in.getHeight();
+  WritableImage out = new WritableImage(width, height);
+  for (int x = 0; x < width; x++)
+     for (int y = 0; y < height; y++) {
+        Color c = in.getPixelReader().getColor(x, y);
+        for (UnaryOperator<Color> f : pendingOperations) c = f.apply(c);
+        out.getPixelWriter().setColor(x, y, c);
+     }
+  return out;
+}
+```
+연산 결과 리턴하는 최종 연산인 toImage를 제공한다. toImage가 호출 될때까지 잠시 연산을 지연 시킬 수 있다.
+
+모든 연산에 지연 연산을 적용할 수 업속, 실제 연산들이 복잡하기 때문에 지연 연산을 구현하기는 무척 어려운 작업임.
 
 ## 연산 병렬화
 ## 예외 다루기
