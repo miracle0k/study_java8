@@ -94,6 +94,22 @@ interface ColorTransformer {
 
 ## 함수 리턴
 함수형 언어에서는 함수가 일차 구성원으로 함수를 메서드의 인자나 리턴값으로 사용할 수 있다.
+자바는 함수형 인터페이스를 인자나 리턴값으로 사용하여 함수(?)를 전달 할 수 있다.
+
+예) 함수형 인터페이스를 리턴하는 메소드
+```java
+public static Image transform(Image in, UnaryOperator<Color> f) {
+   //do something...
+}
+
+public static UnaryOperator<Color> brighten(double factor) {
+  return c -> c.deriveColor(0, 1, factor, 1);
+}
+
+// call example
+Image brightenedImage = transform(image, brighten(1.2));
+```
+brighten 메소드는 UnaryOperator 함수형 인터페이스를 리턴하며, 리턴값을 transform의 인자로 사용할 수 있다.
 
 ## 합성
 ## 지연
