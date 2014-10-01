@@ -181,6 +181,36 @@ public Image toImage() {
 모든 연산에 지연 연산을 적용할 수 업속, 실제 연산들이 복잡하기 때문에 지연 연산을 구현하기는 무척 어려운 작업임.
 
 ## 연산 병렬화
+연산을 쪼깨서 동시에 수행할 수 있는지 검토해보고, 적용시 장단점을 고려하여 병렬 처리를 할지 결정 해야한다.
+
+예) transform 병렬 버전 
+```java
+   public static Color[][] parallelTransform(Color[][] in, UnaryOperator<Color> f) {
+      int n = Runtime.getRuntime().availableProcessors();
+      int height = in.length;
+      int width = in[0].length;
+      Color[][] out = new Color[height][width];
+      try {
+         ExecutorService pool = Executors.newCachedThreadPool();
+         for (int i = 0; i < n; i++) {
+            int fromY = i * height / n;
+            int toY = (i + 1) * height / n;
+            pool.submit(() -> {
+                  System.out.printf("%s %d...%d\n", Thread.currentThread(), fromY, toY - 1);
+                  for (int x = 0; x < width; x++)
+                     for (int y = fromY; y < toY; y++)
+                        out[y][x] = f.apply(in[y][x]);
+               });
+         }
+         pool.shutdown();
+         pool.awaitTermination(1, TimeUnit.HOURS);
+      }
+      catch (InterruptedException ex) {
+         ex.printStackTrace();
+      }
+      return out;
+   }
+```
 ## 예외 다루기
 ## 람다와 제네릭
 ## 모나드 연산
