@@ -212,5 +212,17 @@ public Image toImage() {
    }
 ```
 ## 예외 다루기
+
 ## 람다와 제네릭
+* 읽기 -> 공변(covariant[서브타입도 사용 가능])
+* 쓰기 -> 역변(contravariant[슈퍼타입도 사용 가능])
+* 인자 타입에는 super를 사용
+* 리턴 타입에는 extends를 사용
+
+```java
+Stream<T> filter(Predicate<? super T> predicate)
+<R> Stream<R> map(Function<? super T, ? extends R> mapper)
+```
+
 ## 모나드 연산
+무슨 이야기인지 모르겠다.. ㅋ
