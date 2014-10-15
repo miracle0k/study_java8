@@ -32,8 +32,18 @@ assertThat(birthday.toString(), is("1982-02-28"));
 
 plusDays, until등을 이용해서 날짜 계산 가능.
 
-## 날짜 조정기
-## 지역 시간
+## TemporalAdjusters
+TemporalAdjusters를 이용해서 특정 조건의 날짜를 얻을 수 있다. 예를 들면 '매월 첫 번째 화요일' 같은~
+
+```java
+LocalDate firstTuesday = LocalDate.of(year, month, 1)
+	.with(TemporalAdjusters.nextOrSame(DayOfWeek.TUESDAY));
+System.out.println("firstTuesday: " + firstTuesday);
+```
+nextOrSame : 주어진 날짜부터 지정 요일에 해당하는 다음 또는 이전 날짜.
+좀 더 자세한 메소드 설명은 교제 참고!(141페이지)
+
+## LocalTime
 ## 구역 시간
 ## 포멧팅과 파싱
 ## 레거시 코드와 상호 동작
